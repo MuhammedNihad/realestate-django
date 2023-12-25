@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     # Third Party Apps
     'django_extensions',
     'django_cleanup.apps.CleanupConfig',
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -89,7 +90,7 @@ ROOT_URLCONF = 'realestate.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -159,7 +160,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATICFILES_DIRS = ['static']
 
 # Media files
 # https://docs.djangoproject.com/en/dev/ref/settings/#media-root
