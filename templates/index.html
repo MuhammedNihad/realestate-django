@@ -78,11 +78,11 @@
                     <div class="price mb-2"><span>$1,291,000</span></div>
                     <div>
                       <span class="d-block mb-2 text-black-50"
-                        >5232 California Fake, Ave. 21BC</span
+                        >{{ property.address }}</span
                       >
                       <span class="city d-block mb-3">{{ property.name }}</span>
 
-                      <div class="specs d-flex mb-4">
+                      {% comment %} <div class="specs d-flex mb-4">
                         <span class="d-block d-flex align-items-center me-3">
                           <span class="icon-bed me-2"></span>
                           <span class="caption">2 beds</span>
@@ -91,7 +91,7 @@
                           <span class="icon-bath me-2"></span>
                           <span class="caption">2 baths</span>
                         </span>
-                      </div>
+                      </div> {% endcomment %}
 
                       <a
                       href="{{ property.get_absolute_url }}"
