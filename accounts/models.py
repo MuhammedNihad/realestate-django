@@ -11,6 +11,7 @@ from django.db.models import (
 )
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from django_extensions.db.fields import AutoSlugField
 
 from base.models import BaseModel
 from .managers import CustomUserManager
@@ -68,6 +69,11 @@ class TenantProfile(BaseModel):
         upload_to=("uploads/document-proofs/%Y/%m/%d/"),
         help_text=_("Upload/update a document proof file of tenant user"),
     )
+    slug = AutoSlugField(
+        populate_from="name",
+        help_text=_("Automatically generated slug based on the name."),
+    )
+
 
     class Meta:
         verbose_name = "Tenant Profile"
@@ -75,4 +81,4 @@ class TenantProfile(BaseModel):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return f"Profile of {self.user.name}"
+        return f"Profile of {self.name}"

@@ -1,8 +1,19 @@
-from django.db.models import CASCADE, CharField, DateField, DecimalField, ForeignKey, TextChoices, TextField, URLField
+from django.db.models import (
+    CASCADE,
+    CharField,
+    DateField,
+    DecimalField,
+    ForeignKey,
+    TextChoices,
+    TextField,
+    URLField,
+)
 from django.utils.translation import gettext_lazy as _
+from django_extensions.db.fields import AutoSlugField
 
 from base.models import BaseModel
 from accounts.models import TenantProfile
+
 
 class Property(BaseModel):
     """
@@ -39,6 +50,10 @@ class Property(BaseModel):
         default="",
         help_text=_("Google Maps Link (Optional)."),
     )
+    slug = AutoSlugField(
+        populate_from="name",
+        help_text=_("Automatically generated slug based on the name."),
+    )
 
     class Meta:
         verbose_name = "Property"
@@ -65,9 +80,7 @@ class Unit(BaseModel):
         THREE_BHK = "3BHK", _("3BHK")
         FOUR_BHK = "4BHK", _("4BHK")
 
-    property = ForeignKey(
-        Property, on_delete=CASCADE, related_name="units"
-    )
+    property = ForeignKey(Property, on_delete=CASCADE, related_name="units")
     rent_cost = DecimalField(
         _("Rent cost of unit"),
         max_digits=10,
@@ -79,7 +92,11 @@ class Unit(BaseModel):
         max_length=10,
         choices=BedroomType.choices,
         default=BedroomType.ONE_BHK,
-        help_text=_("Choose Bedroom type of unit")
+        help_text=_("Choose Bedroom type of unit"),
+    )
+    slug = AutoSlugField(
+        populate_from=["property", "type"],
+        help_text=_("Automatically generated slug based on the property name and type."),
     )
 
     class Meta:
@@ -89,6 +106,7 @@ class Unit(BaseModel):
 
     def __str__(self):
         return f"{self.type} unit of {self.property.name}"
+
 
 class RentalInformation(BaseModel):
     """
@@ -105,6 +123,10 @@ class RentalInformation(BaseModel):
     unit = ForeignKey(Unit, on_delete=CASCADE)
     agreement_end_date = DateField()
     monthly_rent_date = DateField()
+    slug = AutoSlugField(
+        populate_from=["tenant", "unit",],
+        help_text=_("Automatically generated slug based on the tenant name and unit."),
+    )
 
     class Meta:
         verbose_name = "Rental Information"
