@@ -55,6 +55,7 @@ INSTALLED_APPS = [
 
     # Third Party Apps
     'django_extensions',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
