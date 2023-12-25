@@ -3,6 +3,9 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 
+from base.admin import BaseAdmin
+from .models import TenantProfile
+
 User = get_user_model()
 
 
@@ -39,3 +42,22 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
     )
+
+
+@admin.register(TenantProfile)
+class TenantProfileAdmin(BaseAdmin):
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "user",
+                    "name",
+                    "address",
+                    "document_proof",
+                )
+            },
+        ),
+    )
+    list_display = ["user", "name",]
+    search_fields = ["name"]
