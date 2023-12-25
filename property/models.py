@@ -1,8 +1,8 @@
-from django.db.models import CASCADE, CharField, DecimalField, ForeignKey, TextChoices, TextField, URLField
+from django.db.models import CASCADE, CharField, DateField, DecimalField, ForeignKey, TextChoices, TextField, URLField
 from django.utils.translation import gettext_lazy as _
 
 from base.models import BaseModel
-
+from accounts.models import TenantProfile
 
 class Property(BaseModel):
     """
@@ -89,3 +89,27 @@ class Unit(BaseModel):
 
     def __str__(self):
         return f"{self.type} unit of {self.property.name}"
+
+class RentalInformation(BaseModel):
+    """
+    Represents rental information for a property unit.
+
+    Attributes:
+        tenant (ForeignKey): Foreign key to the TenantProfile model representing the tenant associated with this rental information.
+        unit (ForeignKey): Foreign key to the Unit model representing the rental unit associated with this rental information.
+        agreement_end_date (DateField): Date field representing the end date of the rental agreement.
+        monthly_rent_date (DateField): Date field representing the date on which the monthly rent is due.
+    """
+
+    tenant = ForeignKey(TenantProfile, on_delete=CASCADE)
+    unit = ForeignKey(Unit, on_delete=CASCADE)
+    agreement_end_date = DateField()
+    monthly_rent_date = DateField()
+
+    class Meta:
+        verbose_name = "Rental Information"
+        verbose_name_plural = "Rental Information"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Rental info of {self.unit}"

@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from base.admin import BaseAdmin
-from .models import Property, Unit
+from .models import Property, RentalInformation, Unit
 
 
 @admin.register(Property)
@@ -47,3 +47,26 @@ class UnitAdmin(BaseAdmin):
     )
     list_display = ["property", "rent_cost", "type", "created_at", "updated_at"]
     search_fields = ["name"]
+
+
+@admin.register(RentalInformation)
+class RentalInformationAdmin(BaseAdmin):
+    """
+    Admin class for Rental information model
+    """
+
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "tenant",
+                    "unit",
+                    "agreement_end_date",
+                    "monthly_rent_date",
+                )
+            },
+        ),
+    )
+    list_display = ["tenant", "unit", "agreement_end_date", "monthly_rent_date"]
+    search_fields = ["tenant", "unit"]
