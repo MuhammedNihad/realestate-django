@@ -1,3 +1,16 @@
-from django.shortcuts import render
+from django.views.generic import DetailView
 
-# Create your views here.
+from .models import TenantProfile
+
+
+class TenantProfileDetailView(DetailView):
+    """
+    Render detail page of tenant user
+    """
+
+    model = TenantProfile
+    context_object_name = "tenant"
+    template_name = "tenant-detail.html"
+
+
+tenant_profile_detail_view = TenantProfileDetailView.as_view()

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} Property Detail {% endblock %}
+{% block title %} Tenant Detail {% endblock %}
 {% block content %}
 {% load static %}
 
@@ -8,14 +8,11 @@
       <div class="container">
         <div class="row justify-content-between">
           <div class="col-lg-12 p-5">
-            <h2 class="heading text-primary">{{ property.name }}</h2>
-            <p class="meta">Address: {{ property.address }}</p>
-            {% if property.location %}
-              <p class="meta">Location: {{ property.location|urlize }}</p>
-            {% endif %}
-            {% if property.features %}
-            <p class="text-black-50">Features and Amenities: {{ property.features }}</p>
-            {% endif %}
+            <h2 class="heading text-primary">{{ tenant.name }}</h2>
+            <p class="meta">Address: {{ tenant.address }}</p>
+            {% comment %} {% if tenant.features %}
+            <p class="text-black-50">Features and Amenities: {{ tenant.features }}</p>
+            {% endif %} {% endcomment %}
 
             <div class="d-block agent-box p-5">
               {% comment %} <div class="img mb-4">
@@ -26,15 +23,20 @@
                 />
               </div> {% endcomment %}
               <div class="text">
-                <h3 class="mb-0">Units:</h3>
-                {% if property.units %}
-                {% for unit in property.units.all  %}
+                <h3 class="mb-2">Other property units rented by this tenant:</h3>
+                <ul>
+                    {% for rental_info in tenant.rentalinformation_set.all %}
+                        <li>{{ rental_info.unit }} (Agreement will end on {{ rental_info.agreement_end_date }}, Monthly rent date: {{ rental_info.monthly_rent_date }})</li>
+                    {% endfor %}
+                </ul>
+                {% comment %} {% if tenant.units %}
+                {% for unit in tenant.units.all  %}
                   <div class="meta mb-2">
                     {{ unit.type }}:
 
                     {% for rental_info in unit.rentalinformation_set.all %}
                         {# Access TenantProfile properties through the RentalInformation instance #}
-                        assigned to -  <a href="{{ rental_info.tenant.get_absolute_url }}">{{ rental_info.tenant.name }} (Click to view tenant profile)</a>
+                        assigned to - {{ rental_info.tenant.name }}
                         {# Other properties of the TenantProfile #}
                         {% empty %}
                         Unassigned and Available
@@ -42,7 +44,7 @@
 
                   </div>
                 {% endfor %}
-                {% endif %}
+                {% endif %} {% endcomment %}
                 {% comment %} <p>
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Ratione laborum quo quos omnis sed magnam id ducimus saepe

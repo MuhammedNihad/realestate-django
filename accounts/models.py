@@ -11,6 +11,7 @@ from django.db.models import (
 )
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from django.urls import reverse
 from django_extensions.db.fields import AutoSlugField
 
 from base.models import BaseModel
@@ -82,3 +83,12 @@ class TenantProfile(BaseModel):
 
     def __str__(self):
         return f"Profile of {self.name}"
+
+    def get_absolute_url(self):
+        """
+        Get url for tenant user's detail view.
+
+        Returns:
+            str: URL for user detail.
+        """
+        return reverse("tenant_detail", kwargs={"slug": self.slug})
