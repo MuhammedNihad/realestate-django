@@ -88,4 +88,4 @@ class Unit(BaseModel):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return f"Unit of {self.property.name}"
+        return f"{self.type} unit of {self.property.name}"
