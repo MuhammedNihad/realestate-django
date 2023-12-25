@@ -10,6 +10,7 @@ from django.db.models import (
 )
 from django.utils.translation import gettext_lazy as _
 from django_extensions.db.fields import AutoSlugField
+from django.urls import reverse
 
 from base.models import BaseModel
 from accounts.models import TenantProfile
@@ -66,6 +67,12 @@ class Property(BaseModel):
         """
         return self.name
 
+    def get_absolute_url(self):
+        """
+        Return the absolute url of property.
+        """
+        return reverse("property_detail", args=[str(self.slug)])
+
 
 class Unit(BaseModel):
     """
@@ -96,7 +103,9 @@ class Unit(BaseModel):
     )
     slug = AutoSlugField(
         populate_from=["property", "type"],
-        help_text=_("Automatically generated slug based on the property name and type."),
+        help_text=_(
+            "Automatically generated slug based on the property name and type."
+        ),
     )
 
     class Meta:
@@ -124,7 +133,10 @@ class RentalInformation(BaseModel):
     agreement_end_date = DateField()
     monthly_rent_date = DateField()
     slug = AutoSlugField(
-        populate_from=["tenant", "unit",],
+        populate_from=[
+            "tenant",
+            "unit",
+        ],
         help_text=_("Automatically generated slug based on the tenant name and unit."),
     )
 
